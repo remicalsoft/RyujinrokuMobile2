@@ -1,0 +1,13 @@
+//
+// Created by dixq on 2021/11/09.
+//
+
+#ifndef RYUJINROKUMOBILE_DEFINE_H
+#define RYUJINROKUMOBILE_DEFINE_H
+
+#define PI 3.141592654f
+#define PI2 (3.141592654f*2)
+#define WIN_W 1080
+#define WIN_H 2280
+
+#endif //RYUJINROKUMOBILE_DEFINE_H
