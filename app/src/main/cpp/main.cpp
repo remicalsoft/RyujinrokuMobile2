@@ -4,6 +4,7 @@
 #include <list>
 #include "Utils.h"
 #include "Define.h"
+#include "myjni.h"
 
 using namespace std;
 
@@ -11,16 +12,19 @@ using namespace std;
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "TAG", __VA_ARGS__)
 
 // プログラムは android_main から始まります
-int android_main( void )
+int android_main( )
 {
+
+
     int buf[8];
 
     SetGraphMode(WIN_W, WIN_H, 32);
 
     if( DxLib_Init() == -1 )		// ＤＸライブラリ初期化処理
     {
-        return -1 ;			// エラーが起きたら直ちに終了
+        return -1;			// エラーが起きたら直ちに終了
     }
+
     LoadDivGraph("bullet.png", 8, 8, 1, 62, 62, buf);
     SetDrawScreen( DX_SCREEN_BACK );
 
@@ -33,7 +37,21 @@ int android_main( void )
         b->v = 1 + randf2(0.99);
         bulletList.emplace_back(b);
     }
-    while(!ScreenFlip()&&!ProcessMessage()&&!ClearDrawScreen()){
+    while(1){
+
+        if(1) {
+            JNIEnv *env;
+            const ANativeActivity *NativeActivity = GetNativeActivity();
+            if (NativeActivity->vm->AttachCurrentThreadAsDaemon(&env, NULL) != JNI_OK) {
+                return -1;
+            }
+            jclass jclass_MainActivity = env->GetObjectClass(NativeActivity->clazz);
+            jmethodID jmethodID_PopupWindowTest = env->GetMethodID(jclass_MainActivity, "callback","()V");
+            env->CallVoidMethod(NativeActivity->clazz, jmethodID_PopupWindowTest);
+            env->DeleteLocalRef(jclass_MainActivity);
+            NativeActivity->vm->DetachCurrentThread();
+        }
+
         auto tm = GetNowCount();
         for (auto it = bulletList.begin(); it != bulletList.end();) {
             if (!(*it)->update()) {
@@ -50,5 +68,5 @@ int android_main( void )
 
     DxLib_End() ;				// ＤＸライブラリ使用の終了処理
 
-    return 0 ;					// ソフトの終了
+    return 0;
 }

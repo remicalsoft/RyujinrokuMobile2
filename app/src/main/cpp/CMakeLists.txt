@@ -17,18 +17,14 @@ project("ryujinrokumobile")
 include_directories( C:/Libs/DxLib/${ANDROID_ABI} )
 link_directories( C:/Libs/DxLib/${ANDROID_ABI} )
 
-add_library( # Sets the name of the library.
-        ryujinrokumobile
-
-        # Sets the library as a shared library.
+add_library(ryujinrokumobile
         SHARED
-
-        # Provides a relative path to your source file(s).
         main.cpp
         Drawable.cpp
         Task.cpp
         Utils.cpp
-        Bullet.cpp)
+        Bullet.cpp
+        myjni.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
