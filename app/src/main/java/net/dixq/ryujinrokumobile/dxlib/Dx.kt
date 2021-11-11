@@ -1,19 +1,25 @@
 package net.dixq.ryujinrokumobile.dxlib
 
-import android.util.Log
-
 object Dx {
 
-    external fun DxLibInit()
+    external fun DrawRotaGraph(x:Float, y:Float, size:Float, ang:Float, imgHandle:Int)
+    external fun ScreenFlip()
+    external fun LoadGraph(path:String): Int
 
-    init {
-        Log.e("rm","loadlibrary")
-        System.loadLibrary("ryujinrokumobile")
+    fun drawRotaGraph(x:Float, y:Float, size:Float, ang:Float, imgHandle:Int){
+        DrawRotaGraph(x, y, size, ang, imgHandle)
     }
 
-    fun initialize(){
-        Log.e("rm", "initialize")
-        DxLibInit()
+    fun screenFlip(){
+        ScreenFlip()
+    }
+
+    fun loadGraph(path:String): Int {
+        return LoadGraph(path)
+    }
+
+    init {
+        System.loadLibrary("ryujinrokumobile")
     }
 
 }

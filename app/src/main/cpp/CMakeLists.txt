@@ -20,10 +20,6 @@ link_directories( C:/Libs/DxLib/${ANDROID_ABI} )
 add_library(ryujinrokumobile
         SHARED
         main.cpp
-        Drawable.cpp
-        Task.cpp
-        Utils.cpp
-        Bullet.cpp
         myjni.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
