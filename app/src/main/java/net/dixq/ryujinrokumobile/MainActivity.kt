@@ -1,39 +1,40 @@
 package net.dixq.ryujinrokumobile
 
-import net.dixq.ryujinrokumobile.dxlib.Dx.LoadGraph
 import android.app.NativeActivity
 import android.util.Log
+import net.dixq.ryujinrokumobile.common.Lg
 import net.dixq.ryujinrokumobile.dxlib.Dx
-import net.dixq.ryujinrokumobile.Bullet
 import java.util.*
 import kotlin.system.measureTimeMillis
 
 class MainActivity : NativeActivity() {
     fun start() {
-        val handle = LoadGraph("bullet.png")
+        val handle = IntArray(8)
+        Dx.LoadDivGraph("bullet2.png", 8, 8, 1, 62, 62, handle)
         val list = LinkedList<Bullet>()
         for (i in 0..10000) {
-            val b = Bullet(handle)
+            val b = Bullet(handle[0])
             b.x = (Define.WIN_W / 2).toFloat()
             b.y = (Define.WIN_H / 2).toFloat()
-            b.ang = Utils.Companion.randf2(Math.PI.toFloat())
-            b.v = 1 + Utils.Companion.randf2(0.99F)
+            b.ang = Util.randf2(Math.PI.toFloat())
+            b.v = 1 + Util.randf2(0.99F)
             list.push(b)
         }
-        while(true){
-            Dx.ScreenFlip()
+        Dx.SetDrawMode(Dx.DX_DRAWMODE_BILINEAR)
+        while(Dx.ScreenFlip()==0 && Dx.ProcessMessage()==0 && Dx.ClearDrawScreen()==0){
             val elapsed = measureTimeMillis {
-                var i = 0
-                while(i < list.size){
-                    if(!list[i].update()){
-                        list.removeAt(i)
+                val it = list.iterator()
+                while (it.hasNext()) {
+                    val b = it.next()
+                    if (!b.update()) {
+                        it.remove()
                     } else {
-                        list[i].draw()
-                        i++
+                        b.draw()
                     }
                 }
             }
-            Log.e("rm", "time:$elapsed")
+            Lg.e("time:$elapsed")
         }
+        Dx.SetDrawMode(Dx.DX_DRAWMODE_NEAREST)
     }
 }

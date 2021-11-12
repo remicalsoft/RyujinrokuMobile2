@@ -1,6 +1,6 @@
 package net.dixq.ryujinrokumobile
 
-class Utils {
+class Util {
 
     companion object {
 
